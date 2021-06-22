@@ -59,7 +59,7 @@ public class ClientGUI extends JFrame implements WindowListener
         scoreLabel.setBounds(10,90,100,25);
 
         client=Client.getGameClient();
-        clientTank=new Tank();
+        clientTank=new Tank(teamText);
 
         boardPanel=new GameBoardPanel(clientTank,client,false);
         userPanel=new UserPanel(nameText,scoreLabel,loginGUI, this);

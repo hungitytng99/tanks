@@ -35,7 +35,7 @@ public class Tank {
     }
     
     /** Creates a new instance of Tank */
-    public Tank() 
+    public Tank(String team)
     {
         // random ra 1 vi tri nam trong ban do
         while(posiX<70|posiY<50|posiY>height-43|posiX>width-43)
@@ -43,6 +43,7 @@ public class Tank {
             posiX=(int)(Math.random()*width);
             posiY=(int)(Math.random()*height);
         }
+        this.team = team;
         loadImage(4);
         
     }
@@ -80,7 +81,7 @@ public class Tank {
     {
         return posiY;
     }
-    public String getTeam() {return team;};
+    public String getTeam() {return this.team;};
     public void setXpoistion(int x)
     {
         posiX=x;
@@ -190,7 +191,6 @@ public class Tank {
     public void shot()
     {
         bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction,this.getTeam());
-        
         bomb[curBomb].startBombThread(true);
         curBomb++;
     }
@@ -265,20 +265,12 @@ public class Tank {
 
     @Override
     public String toString() {
-        return "Tank{" +
-                "tankImg=" + Arrays.toString(tankImg) +
-                ", ImageBuff=" + ImageBuff +
-                ", bomb=" + Arrays.toString(bomb) +
-                ", curBomb=" + curBomb +
+        return
                 ", tankID=" + tankID +
                 ", posiX=" + posiX +
                 ", posiY=" + posiY +
                 ", direction=" + direction +
-                ", team='" + team + '\'' +
-                ", velocityX=" + velocityX +
-                ", velocityY=" + velocityY +
-                ", width=" + width +
-                ", height=" + height +
-                '}';
+                ", team='" + team + '\''
+                ;
     }
 }
