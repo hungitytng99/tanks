@@ -2,9 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.SocketException;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 /*
  * ServerGUI.java
  *
@@ -23,6 +21,8 @@ public class ServerGUI extends JFrame implements ActionListener {
     private JButton startServerButton;
     private JButton stopServerButton;
     private JLabel statusLabel;
+    private JLabel portLable;
+    private JTextField portTextField;
     
     private Server server;
     /** Creates a new instance of ServerGUI */
@@ -34,12 +34,20 @@ public class ServerGUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         setLayout(null);
+
+        portLable = new JLabel("Enter Port:");
+        portLable.setBounds(50,15,100,30);
+
+        portTextField = new JTextField("1234");
+        portTextField.setBounds(150,10,120,40);
+        portTextField.addActionListener(this);
+
         startServerButton=new JButton("Start Server");
-        startServerButton.setBounds(20,30,120,25);
+        startServerButton.setBounds(20,60,120,25);
         startServerButton.addActionListener(this);
         
         stopServerButton=new JButton("Stop Server");
-        stopServerButton.setBounds(150,30,120,25);
+        stopServerButton.setBounds(150,60,120,25);
         stopServerButton.addActionListener(this);
         
         statusLabel=new JLabel();
@@ -48,13 +56,8 @@ public class ServerGUI extends JFrame implements ActionListener {
         getContentPane().add(statusLabel);
         getContentPane().add(startServerButton);
         getContentPane().add(stopServerButton);
-        try {
-            
-            server=new Server();
-        } catch (SocketException ex) {
-            ex.printStackTrace();
-        }
-        
+        getContentPane().add(portTextField);
+        getContentPane().add(portLable);
         setVisible(true);
     }
 
@@ -62,16 +65,26 @@ public class ServerGUI extends JFrame implements ActionListener {
     {
         if(e.getSource()==startServerButton)
         {
-             server.start();
-             startServerButton.setEnabled(false);
-             statusLabel.setText("Server is running.....");
-            
+            if(portTextField.getText().equals("")){
+                JOptionPane.showMessageDialog(this,"Please fill all field!","Tanks Game",JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("Fill all field required!");
+            }else{
+                try {
+
+                    server=new Server(Integer.parseInt(portTextField.getText()));
+                } catch (SocketException ex) {
+                    ex.printStackTrace();
+                }
+                server.start();
+                startServerButton.setEnabled(false);
+                statusLabel.setText("Server is running.....");
+            }
+
         }
         
         if(e.getSource()==stopServerButton)
         {
             try {
- 
                 server.stopServer();
                 statusLabel.setText("Server is stopping.....");
                 try {
