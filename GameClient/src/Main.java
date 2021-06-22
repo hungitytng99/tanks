@@ -22,8 +22,8 @@ public class Main {
     
     public static void main(String args[]) throws IOException
     {
-        ClientGUI client=new ClientGUI();
-     
+//        ClientGUI client=new ClientGUI();
+            new LoginGUI();
     }
     
 }

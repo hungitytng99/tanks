@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 /*
  * GameBoardPanel.java
  *
- * Created on 25 ãÇÑÓ, 2008, 09:21 ã
+ * Created on 25 ï¿½ï¿½ï¿½ï¿½, 2008, 09:21 ï¿½
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -33,6 +33,7 @@ public class GameBoardPanel extends JPanel {
     private boolean gameStatus;
     public GameBoardPanel(Tank tank,Client client, boolean gameStatus) 
     {
+        System.out.println(client.getName());
         this.tank=tank;
         this.gameStatus=gameStatus;
         setSize(width,height);
@@ -52,15 +53,15 @@ public class GameBoardPanel extends JPanel {
         super.paintComponent(gr);
         Graphics2D g=(Graphics2D)gr;
  
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(179,226,131));
         g.fillRect(0,0, getWidth(),getHeight());
         
         g.setColor(Color.GREEN);
         g.fillRect(70,50, getWidth()-100,getHeight());
         g.drawImage(new ImageIcon("Images/bg.jpg").getImage(),70,50,null);
-        g.setColor(Color.YELLOW);
+        g.setColor(new Color(0,0,0));
         g.setFont(new Font("Comic Sans MS",Font.BOLD,25));
-        g.drawString("Tanks 2D Multiplayers Game",255,30);
+        g.drawString("Tanks Game",255,30);
         if(gameStatus) 
         {
             g.drawImage(tank.getBuffImage(),tank.getXposition(),tank.getYposition(),this);

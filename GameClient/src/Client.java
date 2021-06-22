@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 /*
  * Client.java
  *
- * Created on 21 ãÇÑÓ, 2008, 09:23 Õ
+ * Created on 21 ï¿½ï¿½ï¿½ï¿½, 2008, 09:23 ï¿½
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -25,14 +25,12 @@ import java.net.UnknownHostException;
  * @author Mohamed Talaat Saad
  */
 public class Client {
-    
-    /**
-     * Creates a new instance of Client
-     */
+
     
     private Socket clientSocket;
     private String hostName;
     private int serverPort;
+    private String name;
     private DataInputStream reader;
     private DataOutputStream writer;
     private Protocol protocol;
@@ -43,16 +41,15 @@ public class Client {
         protocol=new Protocol();
     }
 
-    public void register(String Ip,int port,int posX,int posY) throws IOException
+    public void register(String name,String Ip,int port,int posX,int posY) throws IOException
     {
         this.serverPort=port;
         this.hostName=Ip;
+        this.name = name;
         clientSocket=new Socket(Ip,port);
         writer=new DataOutputStream(clientSocket.getOutputStream());
       
         writer.writeUTF(protocol.RegisterPacket(posX,posY));
-        
-
     }
   
     public void sendToServer(String message)
@@ -81,6 +78,7 @@ public class Client {
     {
         return hostName;
     }
+    public String getName() {return name;}
     public static Client getGameClient()
     {
         if(client==null)

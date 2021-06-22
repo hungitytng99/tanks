@@ -13,108 +13,59 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-/*
- * ClientGUI.java
- *
- * Created on 21 „«—”, 2008, 02:26 „
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Mohamed Talaat Saad
- */
-public class ClientGUI extends JFrame implements ActionListener,WindowListener 
+public class ClientGUI extends JFrame implements WindowListener
 {
-    
-    /** Creates a new instance of ClientGUI */
-    private JLabel ipaddressLabel;
-    private JLabel portLabel;
+    private  static JLabel nameLabel;
     private static JLabel scoreLabel;
-    
-    private JTextField ipaddressText;
-    private JTextField portText;
-    
-    private JButton registerButton;
-    
-    
-    private JPanel registerPanel;
     public static JPanel gameStatusPanel;
     private Client client;
     private Tank clientTank;
     
     private static int score;
     
-    int width=790,height=580;
+    int width=570,height=580;
     boolean isRunning=true;
     private GameBoardPanel boardPanel;
-    
-   
-    
-    public ClientGUI() 
+    JFrame loginGUI;
+    String ipaddressText;
+    String portText;
+    String nameText;
+
+    public ClientGUI(JFrame loginGUI, String ipaddressText, String portText, String nameText)
     {
+        this.loginGUI = loginGUI;
+        this.ipaddressText = ipaddressText;
+        this.portText = portText;
+        this.nameText = nameText;
+
         score=0;
-        setTitle("Multiclients Tanks Game");
+        setTitle("Tanks Game");
         setSize(width,height);
         setLocation(60,100);
-        getContentPane().setBackground(Color.BLACK);
+        getContentPane().setBackground(new Color(179,226,131));
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         addWindowListener(this);
-        registerPanel=new JPanel();
-        registerPanel.setBackground(Color.WHITE);
-        registerPanel.setSize(200,140);
-        registerPanel.setBounds(560,50,200,140);
-        registerPanel.setLayout(null);
-        
-        gameStatusPanel=new JPanel();
-        gameStatusPanel.setBackground(Color.WHITE);
-        gameStatusPanel.setSize(200,300);
-        gameStatusPanel.setBounds(560,210,200,311);
-        gameStatusPanel.setLayout(null);
-     
-        ipaddressLabel=new JLabel("IP address: ");
-        ipaddressLabel.setBounds(10,25,70,25);
-        
-        portLabel=new JLabel("Port: ");
-        portLabel.setBounds(10,55,50,25);
+
+        nameLabel = new JLabel(nameText);
+        nameLabel.setBounds(10,10,100,25);
+
         
         scoreLabel=new JLabel("Score : 0");
         scoreLabel.setBounds(10,90,100,25);
-        
-        ipaddressText=new JTextField("localhost");
-        ipaddressText.setBounds(90,25,100,25);
-        
-        portText=new JTextField("11111");
-        portText.setBounds(90,55,100,25);
+
        
-        registerButton=new JButton("Register");
-        registerButton.setBounds(60,100,90,25);
-        registerButton.addActionListener(this);
-        registerButton.setFocusable(true);
-        
-       
-        registerPanel.add(ipaddressLabel);
-        registerPanel.add(portLabel);
-        registerPanel.add(ipaddressText);
-        registerPanel.add(portText);
-        registerPanel.add(registerButton);
-       
-        gameStatusPanel.add(scoreLabel);
-            
+//        gameStatusPanel.add(scoreLabel);
         client=Client.getGameClient();
          
         clientTank=new Tank();
         boardPanel=new GameBoardPanel(clientTank,client,false);
-        
-        getContentPane().add(registerPanel);        
-        getContentPane().add(gameStatusPanel);
-        getContentPane().add(boardPanel);        
-        setVisible(true);
 
+        initClient();
+        getContentPane().add(boardPanel);
+        setVisible(true);
     }
     
     public static int getScore()
@@ -128,18 +79,11 @@ public class ClientGUI extends JFrame implements ActionListener,WindowListener
         scoreLabel.setText("Score : "+score);
     }
     
-    public void actionPerformed(ActionEvent e) 
+    public void initClient()
     {
-        Object obj=e.getSource();
-        
-        if(obj==registerButton)
-        {
-            registerButton.setEnabled(false);
-            
-            try 
+            try
             {
-                 client.register(ipaddressText.getText(),Integer.parseInt(portText.getText()),clientTank.getXposition(),clientTank.getYposition());
-                
+                 client.register(nameText,ipaddressText,Integer.parseInt(portText),clientTank.getXposition(),clientTank.getYposition());
                  boardPanel.setGameStatus(true);
                  boardPanel.repaint();
                 try {
@@ -148,16 +92,12 @@ public class ClientGUI extends JFrame implements ActionListener,WindowListener
                     ex.printStackTrace();
                 }
                  new ClientRecivingThread(client.getSocket()).start();
-                 registerButton.setFocusable(false);
                  boardPanel.setFocusable(true);
-            } catch (IOException ex) 
+            } catch (IOException ex)
             {
-                JOptionPane.showMessageDialog(this,"The Server is not running, try again later!","Tanks 2D Multiplayer Game",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"The Server is not running, try again later!","Tanks 2D Game",JOptionPane.INFORMATION_MESSAGE);
                 System.out.println("The Server is not running!");
-                registerButton.setEnabled(true);
             }
-        }
-        
     }
 
     public void windowOpened(WindowEvent e) 
@@ -167,13 +107,8 @@ public class ClientGUI extends JFrame implements ActionListener,WindowListener
 
     public void windowClosing(WindowEvent e) 
     {
-        
-       // int response=JOptionPane.showConfirmDialog(this,"Are you sure you want to exit ?","Tanks 2D Multiplayer Game!",JOptionPane.YES_NO_OPTION);
-        
-     
      Client.getGameClient().sendToServer(new Protocol().ExitMessagePacket(clientTank.getTankID()));
-        
-        
+
     }
     public void windowClosed(WindowEvent e) {
         
@@ -269,18 +204,18 @@ public class ClientGUI extends JFrame implements ActionListener,WindowListener
                   
                   if(id==clientTank.getTankID())
                   {
-                        int response=JOptionPane.showConfirmDialog(null,"Sorry, You are loss. Do you want to try again ?","Tanks 2D Multiplayer Game",JOptionPane.OK_CANCEL_OPTION);
+                        int response=JOptionPane.showConfirmDialog(null,"Sorry, You are loss. Do you want to try again ?","Tanks Game",JOptionPane.OK_CANCEL_OPTION);
                         if(response==JOptionPane.OK_OPTION)
                         {
                             //client.closeAll();
                             setVisible(false);
                             dispose();
-                            
-                            new ClientGUI();
+                            new ClientGUI(loginGUI, ipaddressText, portText, nameText);
                         }
                         else
                         {
-                            System.exit(0);
+                            loginGUI.setVisible(true);
+                            setVisible(false);
                         }
                   }
                   else
