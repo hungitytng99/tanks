@@ -75,7 +75,7 @@ public class Bomb {
                 if(team.equals(this.teamTank)){
                     return false;
                 }
-                System.out.println("CHECK: " + team + teamTank);
+                System.out.println("CHECK: " + team + teamTank +"//"+clientTanks.get(i).getXposition());
                 if((yPosi>=y&&yPosi<=y+43)&&(xPosi>=x&&xPosi<=x+43)) 
                 {
                     ClientGUI.setScore(50);

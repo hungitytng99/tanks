@@ -23,9 +23,9 @@ public class Protocol {
         
     }
     
-    public String RegisterPacket(int x,int y)
+    public String RegisterPacket(int x,int y, String team)
     {
-        message="Hello"+x+","+y;
+        message="Hello"+x+","+y+"/"+team;
         return message;
     }
     public String UpdatePacket(int x,int y,int id,int dir)

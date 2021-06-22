@@ -1,6 +1,7 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.ImageIcon;
 /*
  * Tank.java
@@ -260,5 +261,24 @@ public class Tank {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Tank{" +
+                "tankImg=" + Arrays.toString(tankImg) +
+                ", ImageBuff=" + ImageBuff +
+                ", bomb=" + Arrays.toString(bomb) +
+                ", curBomb=" + curBomb +
+                ", tankID=" + tankID +
+                ", posiX=" + posiX +
+                ", posiY=" + posiY +
+                ", direction=" + direction +
+                ", team='" + team + '\'' +
+                ", velocityX=" + velocityX +
+                ", velocityY=" + velocityY +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
     }
 }

@@ -36,7 +36,7 @@ public class LoginGUI  extends JFrame {
         ipaddressText=new JTextField("localhost");
         ipaddressText.setBounds(90,55,100,25);
 
-        portText=new JTextField("11111");
+        portText=new JTextField("1234");
         portText.setBounds(90,85,100,25);
 
         teamText=new JTextField("1");

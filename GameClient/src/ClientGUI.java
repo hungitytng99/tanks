@@ -95,7 +95,7 @@ public class ClientGUI extends JFrame implements WindowListener
     {
             try
             {
-                 client.register(nameText,ipaddressText,Integer.parseInt(portText),clientTank.getXposition(),clientTank.getYposition());
+                 client.register(nameText,ipaddressText,Integer.parseInt(portText),clientTank.getXposition(),clientTank.getYposition(),teamText);
                  boardPanel.setGameStatus(true);
                  boardPanel.repaint();
                 try {
@@ -177,12 +177,14 @@ public class ClientGUI extends JFrame implements WindowListener
                     int pos1=sentence.indexOf(',');
                     int pos2=sentence.indexOf('-');
                     int pos3=sentence.indexOf('|');
+                    int pos4=sentence.indexOf('/');
                     int x=Integer.parseInt(sentence.substring(9,pos1));
                     int y=Integer.parseInt(sentence.substring(pos1+1,pos2));
                     int dir=Integer.parseInt(sentence.substring(pos2+1,pos3));
-                    int id=Integer.parseInt(sentence.substring(pos3+1,sentence.length()));
+                    int id=Integer.parseInt(sentence.substring(pos3+1,pos4));
+                    String team =sentence.substring(pos4+1,sentence.length());
                     if(id!=clientTank.getTankID())
-                        boardPanel.registerNewTank(new Tank(x,y,dir,id,0,teamText));
+                        boardPanel.registerNewTank(new Tank(x,y,dir,id,0,team));
                }   
                else if(sentence.startsWith("Update"))
                {

@@ -40,7 +40,7 @@ public class Client {
         protocol=new Protocol();
     }
 
-    public void register(String name,String Ip,int port,int posX,int posY) throws IOException
+    public void register(String name,String Ip,int port,int posX,int posY,String team) throws IOException
     {
         this.serverPort=port;
         this.hostName=Ip;
@@ -48,7 +48,7 @@ public class Client {
         clientSocket=new Socket(Ip,port);
         writer=new DataOutputStream(clientSocket.getOutputStream());
         // dang ki voi server dia diem cua tank se hien ra
-        writer.writeUTF(protocol.RegisterPacket(posX,posY));
+        writer.writeUTF(protocol.RegisterPacket(posX,posY,team));
     }
   
     public void sendToServer(String message)
