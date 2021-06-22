@@ -83,7 +83,9 @@ public class Server extends Thread {
             {
                 int pos=sentence.indexOf(',');	
                 int x=Integer.parseInt(sentence.substring(5,pos));
-                int y=Integer.parseInt(sentence.substring(pos+1,sentence.length()));
+                int pos2=pos=sentence.indexOf('-');
+                int y=Integer.parseInt(sentence.substring(pos+1,pos2));
+                int team=Integer.parseInt(sentence.substring(pos2+1,sentence.length()));
               
                 try {
                     writer=new DataOutputStream(clientSocket.getOutputStream());
@@ -92,13 +94,13 @@ public class Server extends Thread {
                 }
                 sendToClient(protocol.IDPacket(clients.size()+1));
                 try {
-                    BroadCastMessage(protocol.NewClientPacket(x,y,1,clients.size()+1));
+                    BroadCastMessage(protocol.NewClientPacket(x,y,1,clients.size()+1,team));
                     sendAllClients(writer);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
                 
-                clients.add(new ClientInfo(writer,x,y,1));
+                clients.add(new ClientInfo(writer,x,y,1,team));
                 
             }
             
@@ -195,15 +197,16 @@ public class Server extends Thread {
     
     public void sendAllClients(DataOutputStream writer)
     {
-        int x,y,dir;
+        int x,y,dir,team;
         for(int i=0;i<clients.size();i++)
         {
             if(clients.get(i)!=null) {
                 x=clients.get(i).getX();
                 y=clients.get(i).getY();
                 dir=clients.get(i).getDir();
+                team=clients.get(i).getTeam();
                 try {
-                    writer.writeUTF(protocol.NewClientPacket(x,y,dir,i+1));
+                    writer.writeUTF(protocol.NewClientPacket(x,y,dir,i+1,team));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -214,14 +217,15 @@ public class Server extends Thread {
     public class ClientInfo
     {
         DataOutputStream writer;
-        int posX,posY,direction;
+        int posX,posY,direction,team;
         
-        public ClientInfo(DataOutputStream writer,int posX,int posY,int direction)
+        public ClientInfo(DataOutputStream writer,int posX,int posY,int direction,int team)
         {
            this.writer=writer;
            this.posX=posX;
            this.posY=posY;
            this.direction=direction;
+           this.team=team;
         }
         
         public void setPosX(int x)
@@ -252,6 +256,7 @@ public class Server extends Thread {
         {
             return direction;
         }
+        public int getTeam(){return team;}
     }
     
 }

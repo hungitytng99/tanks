@@ -23,9 +23,9 @@ public class Protocol {
         message="ID"+id;
         return message;
     }
-    public String NewClientPacket(int x,int y,int dir,int id)
+    public String NewClientPacket(int x,int y,int dir,int id,int team)
     {
-        message="NewClient"+x+","+y+"-"+dir+"|"+id;
+        message="NewClient"+x+","+y+"-"+dir+"|"+id+"/"+team;
         return message;   
     }
     
