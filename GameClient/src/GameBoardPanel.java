@@ -33,7 +33,6 @@ public class GameBoardPanel extends JPanel {
     private boolean gameStatus;
     public GameBoardPanel(Tank tank,Client client, boolean gameStatus) 
     {
-        System.out.println(client.getName());
         this.tank=tank;
         this.gameStatus=gameStatus;
         setSize(width,height);

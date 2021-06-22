@@ -51,13 +51,10 @@ public class ClientGUI extends JFrame implements WindowListener
 
         nameLabel = new JLabel(nameText);
         nameLabel.setBounds(10,10,100,25);
-
         
         scoreLabel=new JLabel("Score : 0");
         scoreLabel.setBounds(10,90,100,25);
 
-       
-//        gameStatusPanel.add(scoreLabel);
         client=Client.getGameClient();
          
         clientTank=new Tank();

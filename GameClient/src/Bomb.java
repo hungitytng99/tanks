@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 /*
  * Bomb.java
  *
- * Created on 29 ãÇÑÓ, 2008, 06:20 ã
+ * Created on 29 ï¿½ï¿½ï¿½ï¿½, 2008, 06:20 ï¿½
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -82,7 +82,7 @@ public class Bomb {
                     
                     ClientGUI.setScore(50);
                     
-                    ClientGUI.gameStatusPanel.repaint();
+//                    ClientGUI.gameStatusPanel.repaint();
                     
                     try {
                         Thread.sleep(200);
