@@ -27,6 +27,7 @@ public class Server extends Thread {
     private ArrayList<ClientInfo> clients;
     private ServerSocket serverSocket;
     private int serverPort=11111;
+    private Socket clientSocket=null;
     
    
     private DataInputStream reader;
@@ -34,7 +35,7 @@ public class Server extends Thread {
    
     private Protocol protocol;
     private boolean running=true;
-    public Server() throws SocketException 
+    public Server() throws SocketException
     {
         clients=new ArrayList<ClientInfo>();
         protocol=new Protocol();
@@ -44,10 +45,20 @@ public class Server extends Thread {
             ex.printStackTrace();
         }
     }
+    public Server(int serverPortCustom) throws SocketException
+    {
+        clients=new ArrayList<ClientInfo>();
+        protocol=new Protocol();
+        try {
+            serverSocket=new ServerSocket(serverPortCustom);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
         
     public void run()
     {
-        Socket clientSocket=null;
+
         while(running)
         {     
             try {
@@ -199,7 +210,7 @@ public class Server extends Thread {
             }
         }
     }
-    
+
     public class ClientInfo
     {
         DataOutputStream writer;
