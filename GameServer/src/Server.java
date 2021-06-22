@@ -83,10 +83,10 @@ public class Server extends Thread {
             {
                 int pos=sentence.indexOf(',');	
                 int x=Integer.parseInt(sentence.substring(5,pos));
-                int pos2=pos=sentence.indexOf('-');
+                int pos2=sentence.indexOf('/');
                 int y=Integer.parseInt(sentence.substring(pos+1,pos2));
                 int team=Integer.parseInt(sentence.substring(pos2+1,sentence.length()));
-              
+
                 try {
                     writer=new DataOutputStream(clientSocket.getOutputStream());
                 } catch (IOException ex) {
@@ -94,6 +94,7 @@ public class Server extends Thread {
                 }
                 sendToClient(protocol.IDPacket(clients.size()+1));
                 try {
+                    System.out.println(protocol.NewClientPacket(x,y,1,clients.size()+1,team));
                     BroadCastMessage(protocol.NewClientPacket(x,y,1,clients.size()+1,team));
                     sendAllClients(writer);
                 } catch (IOException ex) {
