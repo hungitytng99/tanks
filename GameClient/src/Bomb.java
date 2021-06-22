@@ -29,24 +29,18 @@ public class Bomb {
     private int direction;
     public boolean stop=false;
     private float velocityX=0.05f,velocityY=0.05f;
+    String teamTank;
     
-    public Bomb(int x,int y,int direction) {
-        final SimpleSoundPlayer sound_boom =new SimpleSoundPlayer("boom.wav");
-        final InputStream stream_boom =new ByteArrayInputStream(sound_boom.getSamples());
+    public Bomb(int x,int y,int direction,String team) {
         xPosi=x;
         yPosi=y;
         this.direction=direction;
+        this.teamTank = team;
         stop=false;
         bombImg=new ImageIcon("Images/bomb.png").getImage();
         
         bombBuffImage=new BufferedImage(bombImg.getWidth(null),bombImg.getHeight(null),BufferedImage.TYPE_INT_RGB);
         bombBuffImage.createGraphics().drawImage(bombImg,0,0,null);
-        Thread t= new Thread(new Runnable() {
-        public void run() {
-            sound_boom.play(stream_boom);
-        }
-    }); 
-    t.start();
     }
     public int getPosiX() {
         return xPosi;
@@ -72,26 +66,26 @@ public class Bomb {
     {
         ArrayList<Tank>clientTanks=GameBoardPanel.getClients();
         int x,y;
+        String team;
         for(int i=1;i<clientTanks.size();i++) {
             if(clientTanks.get(i)!=null) {
                 x=clientTanks.get(i).getXposition();
                 y=clientTanks.get(i).getYposition();
-                
+                team = clientTanks.get(i).getTeam();
+                if(team.equals(this.teamTank)){
+                    return false;
+                }
+                System.out.println("CHECK: " + team + teamTank);
                 if((yPosi>=y&&yPosi<=y+43)&&(xPosi>=x&&xPosi<=x+43)) 
                 {
-                    
                     ClientGUI.setScore(50);
-                    
-//                    ClientGUI.gameStatusPanel.repaint();
-                    
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     if(clientTanks.get(i)!=null)
-                     Client.getGameClient().sendToServer(new Protocol().RemoveClientPacket(clientTanks.get(i).getTankID()));  
-                    
+                     Client.getGameClient().sendToServer(new Protocol().RemoveClientPacket(clientTanks.get(i).getTankID()));
                     return true;
                 }
             }
@@ -102,9 +96,7 @@ public class Bomb {
     
     
     public void startBombThread(boolean chekCollision) {
-        
             new BombShotThread(chekCollision).start();
-            
     }
     
     private class BombShotThread extends Thread 
@@ -129,7 +121,6 @@ public class Bomb {
                             break;
                         }
                         try {
-                            
                             Thread.sleep(40);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
@@ -137,7 +128,7 @@ public class Bomb {
                         
                     }
                     
-                } 
+                }
                 else if(direction==2) 
                 {
                     yPosi=17+yPosi;
@@ -198,7 +189,6 @@ public class Bomb {
                         
                     }
                 }
-                
                 stop=true;
             } 
             else 
@@ -244,9 +234,7 @@ public class Bomb {
                     while(yPosi<505) 
                     {    
                         yPosi=(int)(yPosi+yPosi*velocityY);
-                        
                         try {
-                            
                             Thread.sleep(40);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();

@@ -21,48 +21,63 @@ public class ClientGUI extends JFrame implements WindowListener
     public static JPanel gameStatusPanel;
     private Client client;
     private Tank clientTank;
-    
+
+
     private static int score;
     
-    int width=570,height=580;
+    int width=720,height=600;
     boolean isRunning=true;
     private GameBoardPanel boardPanel;
+    private UserPanel userPanel;
     JFrame loginGUI;
+
     String ipaddressText;
     String portText;
     String nameText;
+    String teamText;
 
-    public ClientGUI(JFrame loginGUI, String ipaddressText, String portText, String nameText)
+    public ClientGUI(JFrame loginGUI, String ipaddressText, String portText, String nameText, String teamText)
     {
+
         this.loginGUI = loginGUI;
         this.ipaddressText = ipaddressText;
         this.portText = portText;
         this.nameText = nameText;
-
+        this.teamText = teamText;
         score=0;
-        setTitle("Tanks Game");
-        setSize(width,height);
-        setLocation(60,100);
-        getContentPane().setBackground(new Color(179,226,131));
-        
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
-        addWindowListener(this);
 
         nameLabel = new JLabel(nameText);
-        nameLabel.setBounds(10,10,100,25);
+        nameLabel.setBounds(100,100,100,25);
+
+        gameStatusPanel=new JPanel();
+        gameStatusPanel.setBackground(new Color(179,226,131));
+        gameStatusPanel.setSize(200,300);
+        gameStatusPanel.setBounds(530,180,200,311);
+        gameStatusPanel.setLayout(null);
         
         scoreLabel=new JLabel("Score : 0");
         scoreLabel.setBounds(10,90,100,25);
 
         client=Client.getGameClient();
-         
         clientTank=new Tank();
+
         boardPanel=new GameBoardPanel(clientTank,client,false);
+        userPanel=new UserPanel(nameText,scoreLabel,loginGUI, this);
+        gameStatusPanel.add(scoreLabel);
 
         initClient();
+        setTitle("Tanks Game");
+        setSize(width,height);
+        setLocation(60,100);
+        getContentPane().setBackground(new Color(179,226,131));
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        addWindowListener(this);
+
         getContentPane().add(boardPanel);
-        setVisible(true);
+        getContentPane().add(userPanel);
+        getContentPane().add(gameStatusPanel);
     }
     
     public static int getScore()
@@ -90,8 +105,11 @@ public class ClientGUI extends JFrame implements WindowListener
                 }
                  new ClientRecivingThread(client.getSocket()).start();
                  boardPanel.setFocusable(true);
+                 this.setVisible(true);
             } catch (IOException ex)
             {
+                this.setVisible(false);
+                new LoginGUI();
                 JOptionPane.showMessageDialog(this,"The Server is not running, try again later!","Tanks 2D Game",JOptionPane.INFORMATION_MESSAGE);
                 System.out.println("The Server is not running!");
             }
@@ -164,7 +182,7 @@ public class ClientGUI extends JFrame implements WindowListener
                     int dir=Integer.parseInt(sentence.substring(pos2+1,pos3));
                     int id=Integer.parseInt(sentence.substring(pos3+1,sentence.length()));
                     if(id!=clientTank.getTankID())
-                        boardPanel.registerNewTank(new Tank(x,y,dir,id));
+                        boardPanel.registerNewTank(new Tank(x,y,dir,id,0,teamText));
                }   
                else if(sentence.startsWith("Update"))
                {
@@ -207,7 +225,7 @@ public class ClientGUI extends JFrame implements WindowListener
                             //client.closeAll();
                             setVisible(false);
                             dispose();
-                            new ClientGUI(loginGUI, ipaddressText, portText, nameText);
+                            new ClientGUI(loginGUI, ipaddressText, portText, nameText, teamText);
                         }
                         else
                         {

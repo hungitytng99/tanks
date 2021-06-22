@@ -26,7 +26,6 @@ import java.net.UnknownHostException;
  */
 public class Client {
 
-    
     private Socket clientSocket;
     private String hostName;
     private int serverPort;
@@ -48,21 +47,22 @@ public class Client {
         this.name = name;
         clientSocket=new Socket(Ip,port);
         writer=new DataOutputStream(clientSocket.getOutputStream());
-      
+        // dang ki voi server dia diem cua tank se hien ra
         writer.writeUTF(protocol.RegisterPacket(posX,posY));
     }
   
     public void sendToServer(String message)
     {   
-        if(message.equals("exit"))
+        if(message.equals("exit")) {
             System.exit(0);
+        }
         else
         {
              try {
                  Socket s=new Socket(hostName,serverPort);
                  System.out.println(message);
                  writer=new DataOutputStream(s.getOutputStream());
-                writer.writeUTF(message);
+                 writer.writeUTF(message);
             } catch (IOException ex) {
 
             }
@@ -82,7 +82,6 @@ public class Client {
     public static Client getGameClient()
     {
         if(client==null)
-            
             try {
                 client=new Client();
             } catch (IOException ex) {

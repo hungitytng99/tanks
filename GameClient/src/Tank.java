@@ -24,6 +24,7 @@ public class Tank {
     private int tankID;
     private int posiX=-1,posiY=-1;
     private int direction=1;
+    private String team;
     private float velocityX=0.03125f,velocityY=0.03125f;
     private int width=559,height=473;
 
@@ -34,7 +35,8 @@ public class Tank {
     
     /** Creates a new instance of Tank */
     public Tank() 
-    {  
+    {
+        // random ra 1 vi tri nam trong ban do
         while(posiX<70|posiY<50|posiY>height-43|posiX>width-43)
         {
             posiX=(int)(Math.random()*width);
@@ -43,16 +45,18 @@ public class Tank {
         loadImage(4);
         
     }
-    public Tank(int x,int y,int dir,int id)
+    public Tank(int x,int y,int dir,int id, int indexImage, String team)
     {
         posiX=x;
         posiY=y;
         tankID=id;
         direction=dir;
-        loadImage(0);
+        this.team = team;
+        loadImage(indexImage);
     }
     public void loadImage(int a)
     {
+        //co 8 anh tuong ung voi 2 loai: client va client khac. load image tuong uon voi role o day. xu ly viec cac team dong minh co cung hinh o day
         tankImg=new Image[4];
         for(int i=a;i<tankImg.length+a;i++)
         {
@@ -75,6 +79,7 @@ public class Tank {
     {
         return posiY;
     }
+    public String getTeam() {return team;};
     public void setXpoistion(int x)
     {
         posiX=x;
@@ -93,11 +98,9 @@ public class Tank {
         }
         else
         {
-            
             int temp;
-            
             temp=(int)(posiX-velocityX*posiX);
-            if(checkCollision(temp,posiY)==false&&temp<70)
+            if(checkCollision(temp,posiY)==false && temp<70)
             {
                 posiX=70;
             }
@@ -185,7 +188,7 @@ public class Tank {
     
     public void shot()
     {
-        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction);
+        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction,this.getTeam());
         
         bomb[curBomb].startBombThread(true);
         curBomb++;
@@ -211,7 +214,7 @@ public class Tank {
 
     public void Shot() 
     {
-        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction);
+        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction,this.getTeam());
         
         bomb[curBomb].startBombThread(false);
         curBomb++;

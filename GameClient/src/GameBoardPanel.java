@@ -8,8 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 /*
  * GameBoardPanel.java
  *
@@ -27,10 +26,11 @@ public class GameBoardPanel extends JPanel {
     
     /** Creates a new instance of GameBoardPanel */
     private Tank tank;
-    private int width=609;
+    private int width=580;
     private int height=523;
     private static ArrayList<Tank> tanks;
     private boolean gameStatus;
+
     public GameBoardPanel(Tank tank,Client client, boolean gameStatus) 
     {
         this.tank=tank;
@@ -39,7 +39,7 @@ public class GameBoardPanel extends JPanel {
         setBounds(-50,0,width,height);
         addKeyListener(new InputManager(tank));
         setFocusable(true);
-        
+
         tanks=new ArrayList<Tank>(100);
         
         for(int i=0;i<100;i++)
@@ -54,7 +54,7 @@ public class GameBoardPanel extends JPanel {
  
         g.setColor(new Color(179,226,131));
         g.fillRect(0,0, getWidth(),getHeight());
-        
+
         g.setColor(Color.GREEN);
         g.fillRect(70,50, getWidth()-100,getHeight());
         g.drawImage(new ImageIcon("Images/bg.jpg").getImage(),70,50,null);
