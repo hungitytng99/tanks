@@ -29,7 +29,7 @@ public class ServerGUI extends JFrame implements ActionListener {
     public ServerGUI() 
     {
         setTitle("Game Server GUI");
-        setBounds(350,200,300,200);
+        setBounds(350,200,300,160);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -70,7 +70,6 @@ public class ServerGUI extends JFrame implements ActionListener {
                 System.out.println("Fill all field required!");
             }else{
                 try {
-
                     server=new Server(Integer.parseInt(portTextField.getText()));
                 } catch (SocketException ex) {
                     ex.printStackTrace();

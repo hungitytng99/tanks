@@ -1,4 +1,4 @@
-package com.hauhung.model;
+package com.hauhung.helper;
 
 public class Protocol {
     private String message="";

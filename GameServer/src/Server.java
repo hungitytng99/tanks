@@ -26,7 +26,7 @@ public class Server extends Thread {
     
     private ArrayList<ClientInfo> clients;
     private ServerSocket serverSocket;
-    private int serverPort=11111;
+    private int serverPort=1234;
     private Socket clientSocket=null;
     
    
