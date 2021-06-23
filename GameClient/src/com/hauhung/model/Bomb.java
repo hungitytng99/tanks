@@ -1,39 +1,26 @@
+package com.hauhung.model;
+
+import com.hauhung.contants.ContantsStorage;
+import com.hauhung.views.GUIClient;
+import com.hauhung.views.GameBoardPanel;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-/*
- * Bomb.java
- *
- * Created on 29 ����, 2008, 06:20 �
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Mohamed Talaat Saad
- */
-public class Bomb {
-    
-    /** Creates a new instance of Bomb */
-    
+public class Bomb extends Entity{
     private Image bombImg;
     private BufferedImage bombBuffImage;
-    
-    private int xPosi;
-    private int yPosi;
+
     private int direction;
     public boolean stop=false;
     private float velocityX=0.05f,velocityY=0.05f;
     String teamTank;
     
     public Bomb(int x,int y,int direction,String team) {
-        xPosi=x;
-        yPosi=y;
+        posiX=x;
+        posiY=y;
         this.direction=direction;
         this.teamTank = team;
         stop=false;
@@ -41,18 +28,6 @@ public class Bomb {
         
         bombBuffImage=new BufferedImage(bombImg.getWidth(null),bombImg.getHeight(null),BufferedImage.TYPE_INT_RGB);
         bombBuffImage.createGraphics().drawImage(bombImg,0,0,null);
-    }
-    public int getPosiX() {
-        return xPosi;
-    }
-    public int getPosiY() {
-        return yPosi;
-    }
-    public void setPosiX(int x) {
-        xPosi=x;
-    }
-    public void setPosiY(int y) {
-        yPosi=y;
     }
     public BufferedImage getBomBufferdImg() {
         return bombBuffImage;
@@ -64,20 +39,20 @@ public class Bomb {
     
     public boolean checkCollision() 
     {
-        ArrayList<Tank>clientTanks=GameBoardPanel.getClients();
+        ArrayList<Tank>clientTanks= GameBoardPanel.getClients();
         int x,y;
         String team;
         for(int i=1;i<clientTanks.size();i++) {
             if(clientTanks.get(i)!=null) {
                 x=clientTanks.get(i).getXposition();
                 y=clientTanks.get(i).getYposition();
-                team = clientTanks.get(i).getTeam();
-                if(team.equals(this.teamTank)){
-                    return false;
-                }
-                if((yPosi>=y&&yPosi<=y+43)&&(xPosi>=x&&xPosi<=x+43))
+                if((posiY>=y&&posiY<=y+43)&&(posiX>=x&&posiX<=x+43))
                 {
-                    ClientGUI.setScore(50);
+                    team = clientTanks.get(i).getTeam();
+                    if(team.equals(this.teamTank)){
+                        return false;
+                    }
+                    GUIClient.setScore(50);
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException ex) {
@@ -105,16 +80,27 @@ public class Bomb {
         {
             checkCollis=chCollision;
         }
+        public boolean checkWallCollision(){
+//            if((posiY>=y&&posiY<=y+43)&&(posiX>=x&&posiX<=x+43))
+            for(int i = 0 ; i < ContantsStorage.WALL_LISTS.size(); i ++){
+                if((posiY >= ContantsStorage.WALL_LISTS.get(i).getYposition() && posiY <= (ContantsStorage.WALL_LISTS.get(i).getYposition() + 43))
+                        &&( posiX >= ContantsStorage.WALL_LISTS.get(i).getXposition() && posiX <= (ContantsStorage.WALL_LISTS.get(i).getXposition() + 43))){
+                    return true;
+                }
+            }
+            return false;
+        }
         public void run() 
         {
             if(checkCollis) {
                 
                 if(direction==1) 
                 {
-                    xPosi=17+xPosi;
-                    while(yPosi>50) 
+                    posiX=17+posiX;
+                    while(posiY>50) 
                     {
-                        yPosi=(int)(yPosi-yPosi*velocityY);
+                        if(checkWallCollision()) break;
+                        posiY=(int)(posiY-posiY*velocityY);
                         if(checkCollision()) 
                         {
                             break;
@@ -130,11 +116,12 @@ public class Bomb {
                 }
                 else if(direction==2) 
                 {
-                    yPosi=17+yPosi;
-                    xPosi+=30;
-                    while(xPosi<564) 
+                    posiY=17+posiY;
+                    posiX+=30;
+                    while(posiX<564) 
                     {
-                        xPosi=(int)(xPosi+xPosi*velocityX);
+                        if(checkWallCollision()) break;
+                        posiX=(int)(posiX+posiX*velocityX);
                         if(checkCollision()) 
                         {
                             break;
@@ -150,11 +137,12 @@ public class Bomb {
                 }
                 else if(direction==3) 
                 {
-                    yPosi+=30;
-                    xPosi+=20;
-                    while(yPosi<505) 
-                    {    
-                        yPosi=(int)(yPosi+yPosi*velocityY);
+                    posiY+=30;
+                    posiX+=20;
+                    while(posiY<505) 
+                    {
+                        if(checkWallCollision()) break;
+                        posiY=(int)(posiY+posiY*velocityY);
                         if(checkCollision()) 
                         {
                             break;
@@ -170,11 +158,12 @@ public class Bomb {
                 }
                 else if(direction==4) 
                 {
-                    yPosi=21+yPosi;
+                    posiY=21+posiY;
                     
-                    while(xPosi>70) 
+                    while(posiX>70) 
                     {
-                        xPosi=(int)(xPosi-xPosi*velocityX);
+                        if(checkWallCollision()) break;
+                        posiX=(int)(posiX-posiX*velocityX);
                         if(checkCollision()) 
                         {
                             break;
@@ -194,10 +183,11 @@ public class Bomb {
             {
                  if(direction==1) 
                 {
-                    xPosi=17+xPosi;
-                    while(yPosi>50) 
+                    posiX=17+posiX;
+                    while(posiY>50) 
                     {
-                        yPosi=(int)(yPosi-yPosi*velocityY);
+                        if(checkWallCollision()) break;
+                        posiY=(int)(posiY-posiY*velocityY);
                         
                         try {
                             
@@ -211,11 +201,12 @@ public class Bomb {
                 } 
                 else if(direction==2) 
                 {
-                    yPosi=17+yPosi;
-                    xPosi+=30;
-                    while(xPosi<564) 
+                    posiY=17+posiY;
+                    posiX+=30;
+                    while(posiX<564) 
                     {
-                        xPosi=(int)(xPosi+xPosi*velocityX);
+                        if(checkWallCollision()) break;
+                        posiX=(int)(posiX+posiX*velocityX);
                         
                         try {
                             
@@ -228,11 +219,12 @@ public class Bomb {
                 }
                 else if(direction==3) 
                 {
-                    yPosi+=30;
-                    xPosi+=20;
-                    while(yPosi<505) 
-                    {    
-                        yPosi=(int)(yPosi+yPosi*velocityY);
+                    posiY+=30;
+                    posiX+=20;
+                    while(posiY<505) 
+                    {
+                        if(checkWallCollision()) break;
+                        posiY=(int)(posiY+posiY*velocityY);
                         try {
                             Thread.sleep(40);
                         } catch (InterruptedException ex) {
@@ -243,11 +235,12 @@ public class Bomb {
                 }
                 else if(direction==4) 
                 {
-                    yPosi=21+yPosi;
+                    posiY=21+posiY;
                     
-                    while(xPosi>70) 
+                    while(posiX>70) 
                     {
-                        xPosi=(int)(xPosi-xPosi*velocityX);
+                        if(checkWallCollision()) break;
+                        posiX=(int)(posiX-posiX*velocityX);
                         
                         try {
                             

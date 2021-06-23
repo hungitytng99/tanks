@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.hauhung.helper;
 
-/**
- *
- * @author sherif
- */
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
-    The LoopingByteInputStream is a ByteArrayInputStream that
+    The com.hauhung.helper.LoopingByteInputStream is a ByteArrayInputStream that
     loops indefinitely. The looping stops when the close() method
     is called.
     <p>Possible ideas to extend this class:<ul>
@@ -23,7 +16,7 @@ public class LoopingByteInputStream extends ByteArrayInputStream {
     private boolean closed;
 
     /**
-        Creates a new LoopingByteInputStream with the specified
+        Creates a new com.hauhung.helper.LoopingByteInputStream with the specified
         byte array. The array is not copied.
     */
     public LoopingByteInputStream(byte[] buffer) {

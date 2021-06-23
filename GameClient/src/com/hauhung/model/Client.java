@@ -1,29 +1,9 @@
-import java.io.BufferedReader;
+package com.hauhung.model;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-/*
- * Client.java
- *
- * Created on 21 ����, 2008, 09:23 �
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Mohamed Talaat Saad
- */
 public class Client {
 
     private Socket clientSocket;

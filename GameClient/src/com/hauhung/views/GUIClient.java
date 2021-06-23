@@ -1,28 +1,31 @@
+package com.hauhung.views;
+
+import com.hauhung.model.Client;
+import com.hauhung.model.Protocol;
+import com.hauhung.model.Tank;
+import com.hauhung.model.Wall;
+import com.hauhung.contants.ContantsStorage;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import javax.swing.JButton;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-public class ClientGUI extends JFrame implements WindowListener
+public class GUIClient extends JFrame implements WindowListener
 {
     private  static JLabel nameLabel;
     private static JLabel scoreLabel;
     public static JPanel gameStatusPanel;
     private Client client;
     private Tank clientTank;
-
-
+    private ArrayList<Wall> wallList = new ArrayList<Wall>();
     private static int score;
     
     int width=720,height=600;
@@ -34,16 +37,25 @@ public class ClientGUI extends JFrame implements WindowListener
     String ipaddressText;
     String portText;
     String nameText;
-    String teamText;
 
-    public ClientGUI(JFrame loginGUI, String ipaddressText, String portText, String nameText, String teamText)
+    public GUIClient(JFrame loginGUI, String ipaddressText, String portText, String nameText, String teamText)
     {
-
         this.loginGUI = loginGUI;
         this.ipaddressText = ipaddressText;
         this.portText = portText;
         this.nameText = nameText;
-        this.teamText = teamText;
+        ContantsStorage.TEAM = teamText;
+
+        int wallAx = 150;
+        int wallAy = 150;
+        int wallBx = 240;
+        int wallBy = 300;
+        int wallCx = 410;
+        int wallCy = 215;
+        ContantsStorage.WALL_LISTS.add(new Wall(wallAx,wallAy));
+        ContantsStorage.WALL_LISTS.add(new Wall(wallBx,wallBy));
+        ContantsStorage.WALL_LISTS.add(new Wall(wallCx,wallCy));
+
         score=0;
 
         nameLabel = new JLabel(nameText);
@@ -61,8 +73,8 @@ public class ClientGUI extends JFrame implements WindowListener
         client=Client.getGameClient();
         clientTank=new Tank(teamText);
 
-        boardPanel=new GameBoardPanel(clientTank,client,false);
-        userPanel=new UserPanel(nameText,scoreLabel,loginGUI, this);
+        boardPanel=new GameBoardPanel(clientTank,wallList ,false);
+        userPanel=new UserPanel(nameText,scoreLabel, this, clientTank);
         gameStatusPanel.add(scoreLabel);
 
         initClient();
@@ -95,7 +107,7 @@ public class ClientGUI extends JFrame implements WindowListener
     {
             try
             {
-                 client.register(nameText,ipaddressText,Integer.parseInt(portText),clientTank.getXposition(),clientTank.getYposition(),teamText);
+                 client.register(nameText,ipaddressText,Integer.parseInt(portText),clientTank.getXposition(),clientTank.getYposition(),ContantsStorage.TEAM);
                  boardPanel.setGameStatus(true);
                  boardPanel.repaint();
                 try {
@@ -109,8 +121,8 @@ public class ClientGUI extends JFrame implements WindowListener
             } catch (IOException ex)
             {
                 this.setVisible(false);
-                new LoginGUI();
-                JOptionPane.showMessageDialog(this,"The Server is not running, try again later!","Tanks 2D Game",JOptionPane.INFORMATION_MESSAGE);
+                new GUILogin();
+                JOptionPane.showMessageDialog(this,"The Server is not running, try again later!","Tanks Game",JOptionPane.INFORMATION_MESSAGE);
                 System.out.println("The Server is not running!");
             }
     }
@@ -122,8 +134,7 @@ public class ClientGUI extends JFrame implements WindowListener
 
     public void windowClosing(WindowEvent e) 
     {
-     Client.getGameClient().sendToServer(new Protocol().ExitMessagePacket(clientTank.getTankID()));
-
+        Client.getGameClient().sendToServer(new Protocol().ExitMessagePacket(clientTank.getTankID()));
     }
     public void windowClosed(WindowEvent e) {
         
@@ -169,9 +180,9 @@ public class ClientGUI extends JFrame implements WindowListener
                {
                     int id=Integer.parseInt(sentence.substring(2));
                     clientTank.setTankID(id);
-                    System.out.println("My ID= "+id);
-                    
-               }
+                    System.out.println("My tank ID= "+id);
+
+              }
                else if(sentence.startsWith("NewClient"))
                {
                     int pos1=sentence.indexOf(',');
@@ -183,8 +194,13 @@ public class ClientGUI extends JFrame implements WindowListener
                     int dir=Integer.parseInt(sentence.substring(pos2+1,pos3));
                     int id=Integer.parseInt(sentence.substring(pos3+1,pos4));
                     String team =sentence.substring(pos4+1,sentence.length());
-                    if(id!=clientTank.getTankID())
-                        boardPanel.registerNewTank(new Tank(x,y,dir,id,0,team));
+                    if(id!=clientTank.getTankID()) {
+                        if(team.equals(ContantsStorage.TEAM)){
+                            boardPanel.registerNewTank(new Tank(x, y, dir, id, 8, team));
+                        } else {
+                            boardPanel.registerNewTank(new Tank(x, y, dir, id, 0, team));
+                        }
+                    }
                }   
                else if(sentence.startsWith("Update"))
                {
@@ -227,7 +243,7 @@ public class ClientGUI extends JFrame implements WindowListener
                             //client.closeAll();
                             setVisible(false);
                             dispose();
-                            new ClientGUI(loginGUI, ipaddressText, portText, nameText, teamText);
+                            new GUIClient(loginGUI, ipaddressText, portText, nameText, ContantsStorage.TEAM);
                         }
                         else
                         {

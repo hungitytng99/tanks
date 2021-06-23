@@ -1,22 +1,6 @@
-/*
- * Protocol.java
- *
- * Created on 25 „«—”, 2008, 10:32 „
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
+package com.hauhung.model;
 
-/**
- *
- * @author Mohamed Talaat Saad
- */
 public class Protocol {
-    
-    
-    /**
-     * Creates a new instance of Protocol
-     */
     private String message="";
     public Protocol() 
     {

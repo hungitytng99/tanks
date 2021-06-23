@@ -1,3 +1,9 @@
+package com.hauhung.views;
+
+import com.hauhung.model.Client;
+import com.hauhung.model.Protocol;
+import com.hauhung.model.Tank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,8 +15,14 @@ public class UserPanel extends JPanel {
     private JLabel scoreLabel;
     int width = 150;
     int height = 25;
+    private Tank clientTank;
 
-    public UserPanel(String name,JLabel scoreLabel, JFrame loginGUI, JFrame clientGUI) {
+    public UserPanel(String name,JLabel scoreLabel, JFrame clientGUI, Tank clientTank) {
+        this.scoreLabel = scoreLabel;
+        this.clientTank = clientTank;
+        init(name,clientGUI);
+    }
+    public void init(String name,JFrame clientGUI){
         nameLabel = new JLabel("Hi! " + name, SwingConstants.CENTER);
         nameLabel.setSize(75,height);
 
@@ -19,8 +31,9 @@ public class UserPanel extends JPanel {
         logoutBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LoginGUI();
+                new GUILogin();
                 clientGUI.setVisible(false);
+                Client.getGameClient().sendToServer(new Protocol().ExitMessagePacket(clientTank.getTankID()));
             }
         });
         scoreLabel = new JLabel("Hi! " + name, SwingConstants.CENTER);
@@ -33,7 +46,7 @@ public class UserPanel extends JPanel {
         this.add(nameLabel);
         this.add(logoutBtn);
         this.add(scoreLabel);
-        setLayout(null);
-        setVisible(true);
+        this.setLayout(null);
+        this.setVisible(true);
     }
 }

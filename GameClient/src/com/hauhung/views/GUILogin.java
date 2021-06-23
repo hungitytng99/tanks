@@ -1,10 +1,11 @@
+package com.hauhung.views;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-public class LoginGUI  extends JFrame {
+public class GUILogin extends JFrame {
     int width=240,height=230;
     private JButton registerButton;
     private JPanel registerPanel;
@@ -18,7 +19,7 @@ public class LoginGUI  extends JFrame {
     private JLabel nameLabel;
     private JLabel teamLabel;
 
-    public LoginGUI() {
+    public GUILogin() {
         setTitle("Tanks Game");
         setSize(width,height);
         setLocation(60,100);
@@ -89,7 +90,7 @@ public class LoginGUI  extends JFrame {
             }
             else {
                 try {
-                    new ClientGUI(this, ipaddressText.getText(), portText.getText(), nameText.getText(), teamText.getText());
+                    new GUIClient(this, ipaddressText.getText(), portText.getText(), nameText.getText(), teamText.getText());
                     this.setVisible(false);
                 }
                 catch (Exception exc){

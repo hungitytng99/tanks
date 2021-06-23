@@ -1,37 +1,29 @@
+package com.hauhung.views;
+
+import com.hauhung.contants.ContantsStorage;
+import com.hauhung.helper.InputManager;
+import com.hauhung.model.Client;
+import com.hauhung.model.Tank;
+import com.hauhung.model.Wall;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.util.ArrayList;
 import javax.swing.*;
-/*
- * GameBoardPanel.java
- *
- * Created on 25 ����, 2008, 09:21 �
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Mohamed Talaat Saad
- */
 public class GameBoardPanel extends JPanel {
     
-    /** Creates a new instance of GameBoardPanel */
+    /** Creates a new instance of com.hauhung.views.GameBoardPanel */
     private Tank tank;
     private int width=580;
     private int height=523;
     private static ArrayList<Tank> tanks;
     private boolean gameStatus;
 
-    public GameBoardPanel(Tank tank,Client client, boolean gameStatus) 
+
+
+    public GameBoardPanel(Tank tank,ArrayList<Wall> wallList,boolean gameStatus)
     {
         this.tank=tank;
         this.gameStatus=gameStatus;
@@ -64,12 +56,15 @@ public class GameBoardPanel extends JPanel {
         if(gameStatus) 
         {
             g.drawImage(tank.getBuffImage(),tank.getXposition(),tank.getYposition(),this);
+            for (Wall wall: ContantsStorage.WALL_LISTS) {
+                g.drawImage(wall.getBuffImage(), wall.getXposition(), wall.getYposition(), this);
+            }
             for(int j=0;j<1000;j++)
             {
                 if(tank.getBomb()[j]!=null) 
                 {
                     if(tank.getBomb()[j].stop==false){
-                        g.drawImage(tank.getBomb()[j].getBomBufferdImg(),tank.getBomb()[j].getPosiX(),tank.getBomb()[j].getPosiY(),this);
+                        g.drawImage(tank.getBomb()[j].getBomBufferdImg(),tank.getBomb()[j].getXposition(),tank.getBomb()[j].getYposition(),this);
                     }
                 }
             }
@@ -85,7 +80,7 @@ public class GameBoardPanel extends JPanel {
                         if(tanks.get(i).getBomb()[j]!=null) 
                         {
                             if(tanks.get(i).getBomb()[j].stop==false){
-                            g.drawImage(tanks.get(i).getBomb()[j].getBomBufferdImg(),tanks.get(i).getBomb()[j].getPosiX(),tanks.get(i).getBomb()[j].getPosiY(),this);
+                            g.drawImage(tanks.get(i).getBomb()[j].getBomBufferdImg(),tanks.get(i).getBomb()[j].getXposition(),tanks.get(i).getBomb()[j].getYposition(),this);
                             }
                         }
                     }

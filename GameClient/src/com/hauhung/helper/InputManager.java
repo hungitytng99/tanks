@@ -1,20 +1,13 @@
+package com.hauhung.helper;
+
+import com.hauhung.model.Client;
+import com.hauhung.model.Protocol;
+import com.hauhung.model.Tank;
+
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.net.Socket;
-/*
- * InputManager.java
- *
- * Created on 25 „«—”, 2008, 02:57 „
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Mohamed Talaat Saad
- */
 public class InputManager implements KeyListener  
 {
     private final int LEFT = 37;
@@ -25,8 +18,8 @@ public class InputManager implements KeyListener
     
     private Tank tank;
     private Client client;
-    /** Creates a new instance of InputManager */
-    public InputManager(Tank tank) 
+    /** Creates a new instance of com.hauhung.helper.InputManager */
+    public InputManager(Tank tank)
     {
         this.client=Client.getGameClient();
         this.tank=tank;

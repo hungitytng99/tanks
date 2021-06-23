@@ -1,3 +1,5 @@
+import com.hauhung.views.GUILogin;
+
 import java.io.IOException;
 /*
  * Main.java
@@ -22,8 +24,8 @@ public class Main {
     
     public static void main(String args[]) throws IOException
     {
-//        ClientGUI client=new ClientGUI();
-            new LoginGUI();
+//        com.hauhung.views.ClientGUI client=new com.hauhung.views.ClientGUI();
+            new GUILogin();
     }
     
 }
