@@ -1,6 +1,7 @@
 package com.hauhung.model;
 
 import com.hauhung.contants.ContantsStorage;
+import com.hauhung.helper.Protocol;
 import com.hauhung.views.GUIClient;
 import com.hauhung.views.GameBoardPanel;
 

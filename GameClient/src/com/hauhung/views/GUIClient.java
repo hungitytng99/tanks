@@ -1,7 +1,7 @@
 package com.hauhung.views;
 
 import com.hauhung.model.Client;
-import com.hauhung.model.Protocol;
+import com.hauhung.helper.Protocol;
 import com.hauhung.model.Tank;
 import com.hauhung.model.Wall;
 import com.hauhung.contants.ContantsStorage;

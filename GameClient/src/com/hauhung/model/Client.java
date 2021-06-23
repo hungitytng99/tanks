@@ -1,5 +1,7 @@
 package com.hauhung.model;
 
+import com.hauhung.helper.Protocol;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
