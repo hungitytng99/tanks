@@ -17,16 +17,15 @@ public class Bomb extends Entity{
     private int direction;
     public boolean stop=false;
     private float velocityX=0.05f,velocityY=0.05f;
-    String teamTank;
-    
-    public Bomb(int x,int y,int direction,String team) {
+
+
+    public Bomb(int x,int y,int direction) {
         posiX=x;
         posiY=y;
         this.direction=direction;
-        this.teamTank = team;
         stop=false;
+        // cap nhat anh cua boom
         bombImg=new ImageIcon("Images/bomb.png").getImage();
-        
         bombBuffImage=new BufferedImage(bombImg.getWidth(null),bombImg.getHeight(null),BufferedImage.TYPE_INT_RGB);
         bombBuffImage.createGraphics().drawImage(bombImg,0,0,null);
     }
@@ -50,7 +49,7 @@ public class Bomb extends Entity{
                 if((posiY>=y&&posiY<=y+43)&&(posiX>=x&&posiX<=x+43))
                 {
                     team = clientTanks.get(i).getTeam();
-                    if(team.equals(this.teamTank)){
+                    if(team.equals(ContantsStorage.TEAM)){
                         return false;
                     }
                     GUIClient.setScore(50);
@@ -93,6 +92,8 @@ public class Bomb extends Entity{
         }
         public void run() 
         {
+            //neu la tank client ban thi kiem tra xem dan trung' muc tieu khong
+            //con neu tank doi thu ban thi doi thu tu kiem tra va gui message len server
             if(checkCollis) {
                 
                 if(direction==1) 
@@ -102,6 +103,7 @@ public class Bomb extends Entity{
                     {
                         if(checkWallCollision()) break;
                         posiY=(int)(posiY-posiY*velocityY);
+
                         if(checkCollision()) 
                         {
                             break;
@@ -111,9 +113,8 @@ public class Bomb extends Entity{
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
-                        
                     }
-                    
+
                 }
                 else if(direction==2) 
                 {
@@ -179,50 +180,51 @@ public class Bomb extends Entity{
                     }
                 }
                 stop=true;
-            } 
-            else 
+            }
+            //neu la tank doi thu ban
+            else
             {
-                 if(direction==1) 
+                 if(direction==1)
                 {
                     posiX=17+posiX;
-                    while(posiY>50) 
+                    while(posiY>50)
                     {
                         if(checkWallCollision()) break;
                         posiY=(int)(posiY-posiY*velocityY);
-                        
+
                         try {
-                            
+
                             Thread.sleep(40);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
-                        
+
                     }
-                    
-                } 
-                else if(direction==2) 
+
+                }
+                else if(direction==2)
                 {
                     posiY=17+posiY;
                     posiX+=30;
-                    while(posiX<564) 
+                    while(posiX<564)
                     {
                         if(checkWallCollision()) break;
                         posiX=(int)(posiX+posiX*velocityX);
-                        
+
                         try {
-                            
+
                             Thread.sleep(40);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
-                        
+
                     }
                 }
-                else if(direction==3) 
+                else if(direction==3)
                 {
                     posiY+=30;
                     posiX+=20;
-                    while(posiY<505) 
+                    while(posiY<505)
                     {
                         if(checkWallCollision()) break;
                         posiY=(int)(posiY+posiY*velocityY);
@@ -231,28 +233,28 @@ public class Bomb extends Entity{
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
-                        
+
                     }
                 }
-                else if(direction==4) 
+                else if(direction==4)
                 {
                     posiY=21+posiY;
-                    
-                    while(posiX>70) 
+
+                    while(posiX>70)
                     {
                         if(checkWallCollision()) break;
                         posiX=(int)(posiX-posiX*velocityX);
-                        
+
                         try {
-                            
+
                             Thread.sleep(40);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
-                        
+
                     }
                 }
-                
+
                 stop=true;
             }
         }

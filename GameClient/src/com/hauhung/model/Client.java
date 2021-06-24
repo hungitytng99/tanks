@@ -29,7 +29,6 @@ public class Client {
         this.name = name;
         clientSocket=new Socket(Ip,port);
         writer=new DataOutputStream(clientSocket.getOutputStream());
-        // dang ki voi server dia diem cua tank se hien ra
         writer.writeUTF(protocol.RegisterPacket(posX,posY,team));
     }
   

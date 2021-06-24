@@ -3,7 +3,6 @@ package com.hauhung.helper;
 import com.hauhung.model.Client;
 import com.hauhung.model.Tank;
 
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -30,14 +29,14 @@ public class InputManager implements KeyListener
 
     public void keyPressed(KeyEvent e) 
     {
-
+        // Huong 1: tren , huong 2: phai, huong 3: duoi, huong 4: trai
         if(e.getKeyCode()==LEFT)
         {
             if(tank.getDirection()==1|tank.getDirection()==3)
             {
-                
+                //update vi tri ben phia client
                 tank.moveLeft();
-                
+                //gui thong tin da update len phia server
                 client.sendToServer(new Protocol().UpdatePacket(tank.getXposition(),
                           tank.getYposition(),tank.getTankID(),tank.getDirection()));
                 

@@ -26,15 +26,17 @@ public class Tank extends Entity{
     }
     
     /** Creates a new instance of object.Tank */
-    public Tank(String team)
+    public Tank()
     {
-        // random ra 1 vi tri nam trong ban do
+        // random ra 1 vi tri nam trong ban do.
         while(true){
             posiX = (int) (Math.random() * width);
             posiY = (int) (Math.random() * height);
+            //chi cho phep random trong map
             if(posiX<70|posiY<50|posiY>height-43|posiX>width-43){
                 continue;
             }
+            // chi cho phep random khong trung tuong`
             if(posiY > (ContantsStorage.WALL_LISTS.get(0).getYposition()-43)
                     && posiY < (ContantsStorage.WALL_LISTS.get(0).getYposition()+43)
                     && posiX > (ContantsStorage.WALL_LISTS.get(0).getXposition()-43)
@@ -58,7 +60,6 @@ public class Tank extends Entity{
             }
             break;
         }
-        this.team = team;
         loadImage(4);
         
     }
@@ -90,7 +91,7 @@ public class Tank extends Entity{
 
     public void moveLeft()
     {
-        if(direction==1|direction==3)
+        if(direction==1|direction==3) //neu dang o vi tri tren
         {
            ImageBuff=new BufferedImage(tankImg[3].getWidth(null),tankImg[3].getHeight(null),BufferedImage.TYPE_INT_RGB);
            ImageBuff.createGraphics().drawImage(tankImg[3],0,0,null);
@@ -98,9 +99,8 @@ public class Tank extends Entity{
         }
         else
         {
-
+            System.out.println("move left");
             int temp;
-
             temp=(int)(posiX-velocityX*posiX);
             if(checkCollision(temp,posiY)==false&&temp<70)
             {
@@ -188,7 +188,7 @@ public class Tank extends Entity{
 
     public void shot()
     {
-        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction,this.getTeam());
+        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction);
         bomb[curBomb].startBombThread(true);
         curBomb++;
     }
@@ -211,12 +211,12 @@ public class Tank extends Entity{
         direction=dir;
     }
 
-    public void Shot() 
+    public void Shot()
     {
-        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction,this.getTeam());
+        bomb[curBomb]=new Bomb(this.getXposition(),this.getYposition(),direction);
         bomb[curBomb].startBombThread(false);
         curBomb++;
-    
+
     }
     public boolean checkWallCollision(int direction, int xP, int yP){
         for(int i = 0; i < ContantsStorage.WALL_LISTS.size(); i ++){

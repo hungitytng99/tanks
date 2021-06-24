@@ -23,7 +23,7 @@ public class GameBoardPanel extends JPanel {
 
 
 
-    public GameBoardPanel(Tank tank,ArrayList<Wall> wallList,boolean gameStatus)
+    public GameBoardPanel(Tank tank,boolean gameStatus)
     {
         this.tank=tank;
         this.gameStatus=gameStatus;

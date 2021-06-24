@@ -33,4 +33,9 @@ public class Protocol {
         message="Exit"+id;
         return message;
     }
+    public String getWallsPackage()
+    {
+        message="GetWalls";
+        return message;
+    }
 }

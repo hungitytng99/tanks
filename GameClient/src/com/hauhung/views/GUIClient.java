@@ -23,7 +23,7 @@ public class GUIClient extends JFrame implements WindowListener
     private  static JLabel nameLabel;
     private static JLabel scoreLabel;
     public static JPanel gameStatusPanel;
-    private Client client;
+    private Client  client;
     private Tank clientTank;
     private ArrayList<Wall> wallList = new ArrayList<Wall>();
     private static int score;
@@ -45,7 +45,7 @@ public class GUIClient extends JFrame implements WindowListener
         this.portText = portText;
         this.nameText = nameText;
         ContantsStorage.TEAM = teamText;
-
+        // Khoi tao tuong
         int wallAx = 150;
         int wallAy = 150;
         int wallBx = 240;
@@ -69,11 +69,14 @@ public class GUIClient extends JFrame implements WindowListener
         
         scoreLabel=new JLabel("Score : 0");
         scoreLabel.setBounds(10,90,100,25);
-
+        // tao ra client co Protocol
         client=Client.getGameClient();
-        clientTank=new Tank(teamText);
-
-        boardPanel=new GameBoardPanel(clientTank,wallList ,false);
+//        client.sendToServer(new Protocol().getWallsPackage());
+        // tao tank va them event cho tank
+        clientTank=new Tank();
+        //tao map, them tank nhung set = false de chua active panel. Chi khi tank, client co day du thong tin moi active
+        boardPanel=new GameBoardPanel(clientTank,false);
+        // print user information and logout
         userPanel=new UserPanel(nameText,scoreLabel, this, clientTank);
         gameStatusPanel.add(scoreLabel);
 
@@ -195,6 +198,7 @@ public class GUIClient extends JFrame implements WindowListener
                     int id=Integer.parseInt(sentence.substring(pos3+1,pos4));
                     String team =sentence.substring(pos4+1,sentence.length());
                     if(id!=clientTank.getTankID()) {
+                        System.out.println("TEAM --- " + team);
                         if(team.equals(ContantsStorage.TEAM)){
                             boardPanel.registerNewTank(new Tank(x, y, dir, id, 8, team));
                         } else {
